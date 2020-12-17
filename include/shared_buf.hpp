@@ -43,15 +43,16 @@ namespace xu
     //  Iterators
     //  =========
 
-    class iterator
+    template<typename Ptr_T, typename Val_T>
+    class iterator_
     {
     protected:
-      uint8_t* base_ptr;
+      Ptr_T base_ptr;
       size_t sz;
       size_t i;
     public:
-      iterator(
-        uint8_t* base_ptr_,
+      iterator_(
+        Ptr_T base_ptr_,
         size_t sz_,
         size_t i_ = 0)
         : base_ptr(base_ptr_),
@@ -64,13 +65,13 @@ namespace xu
         }
       }
 
-      iterator(const iterator& other)
+      iterator_(const iterator_& other)
         : base_ptr(other.base_ptr),
           sz(other.sz),
           i(other.i)
       {}
 
-      iterator& operator=(const iterator& other)
+      iterator_& operator=(const iterator_& other)
       {
         base_ptr = other.base_ptr;
         sz = other.sz;
@@ -78,7 +79,7 @@ namespace xu
         return *this;
       }
 
-      iterator& operator++()
+      iterator_& operator++()
       {
         if (i < sz)
         {
@@ -87,14 +88,14 @@ namespace xu
         return *this;
       }
 
-      iterator operator++(int)
+      iterator_ operator++(int)
       {
-        iterator res = *this;
+        iterator_ res = *this;
         operator++();
         return res;
       }
 
-      iterator& operator+=(size_t n)
+      iterator_& operator+=(size_t n)
       {
         size_t next = i + n;
 
@@ -111,21 +112,21 @@ namespace xu
         return *this;
       }
 
-      bool operator==(const iterator& other) const
+      bool operator==(const iterator_& other) const
       {
         return (base_ptr == other.base_ptr
           and sz == other.sz
           and i == other.i);
       }
 
-      bool operator!=(const iterator& other) const
+      bool operator!=(const iterator_& other) const
       {
         return (base_ptr != other.base_ptr
           or sz != other.sz
           or i != other.i);
       }
 
-      uint8_t& operator*() const
+      Val_T operator*() const
       {
         if (i < sz)
         {
@@ -133,7 +134,7 @@ namespace xu
         }
         else
         {
-          throw std::out_of_range("shared_buf::iterator::operator* : invalid");
+          throw std::out_of_range("shared_buf::iterator_::operator* : invalid");
         }
       }
 
@@ -142,7 +143,7 @@ namespace xu
         @note   Result is a scalar
         @note   Result is non-negative, so if lhs < rhs, 0 is returned
         */
-      size_t operator-(const iterator& other) const
+      size_t operator-(const iterator_& other) const
       {
         if (other.i > i)
         {
@@ -155,117 +156,8 @@ namespace xu
       }
     };
 
-    class const_iterator
-    {
-    protected:
-      uint8_t* base_ptr;
-      size_t sz;
-      size_t i;
-    public:
-      const_iterator(
-        uint8_t* base_ptr_,
-        size_t sz_,
-        size_t i_ = 0)
-        : base_ptr(base_ptr_),
-          sz(sz_),
-          i(i_)
-      {
-        if (i > sz)
-        {
-          i = sz;
-        }
-      }
-
-      const_iterator(const const_iterator& other)
-        : base_ptr(other.base_ptr),
-          sz(other.sz),
-          i(other.i)
-      {}
-
-      const_iterator& operator=(const const_iterator& other)
-      {
-        base_ptr = other.base_ptr;
-        sz = other.sz;
-        i = other.i;
-        return *this;
-      }
-
-      const_iterator& operator++()
-      {
-        if (i < sz)
-        {
-          i++;
-        }
-        return *this;
-      }
-
-      const_iterator operator++(int)
-      {
-        const_iterator res = *this;
-        operator++();
-        return res;
-      }
-
-      const_iterator& operator+=(size_t n)
-      {
-        size_t next = i + n;
-
-        /* check for overflow (as implemented we only allow forward traversal) */
-        if (next < i or next > sz)
-        {
-          i = sz;
-        }
-        else
-        {
-          i = next;
-        }
-
-        return *this;
-      }
-
-      bool operator==(const const_iterator& other) const
-      {
-        return (base_ptr == other.base_ptr
-          and sz == other.sz
-          and i == other.i);
-      }
-
-      bool operator!=(const const_iterator& other) const
-      {
-        return (base_ptr != other.base_ptr
-          or sz != other.sz
-          or i != other.i);
-      }
-
-      uint8_t operator*() const
-      {
-        if (i < sz)
-        {
-          return base_ptr[i];
-        }
-        else
-        {
-          throw std::out_of_range("shared_buf::const_iterator::operator* : invalid");
-        }
-      }
-
-      /**
-        @brief  Returns distance between two iterators, measured in bytes
-        @note   Result is a scalar
-        @note   Result is non-negative, so if lhs < rhs, 0 is returned
-        */
-      size_t operator-(const const_iterator& other) const
-      {
-        if (other.i > i)
-        {
-          return 0;
-        }
-        else
-        {
-          return i - other.i;
-        }
-      }
-    };
+    using iterator = iterator_<uint8_t*, uint8_t&>;
+    using const_iterator = iterator_<const uint8_t*, uint8_t>;
 
     iterator begin()
     {
