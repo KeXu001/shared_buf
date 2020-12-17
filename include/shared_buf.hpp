@@ -111,14 +111,14 @@ namespace xu
         return *this;
       }
 
-      bool operator==(const iterator& other)
+      bool operator==(const iterator& other) const
       {
         return (base_ptr == other.base_ptr
           and sz == other.sz
           and i == other.i);
       }
 
-      bool operator!=(const iterator& other)
+      bool operator!=(const iterator& other) const
       {
         return (base_ptr != other.base_ptr
           or sz != other.sz
@@ -142,7 +142,7 @@ namespace xu
         @note   Result is a scalar
         @note   Result is non-negative, so if lhs < rhs, 0 is returned
         */
-      size_t operator-(const iterator& other)
+      size_t operator-(const iterator& other) const
       {
         if (other.i > i)
         {
@@ -286,7 +286,7 @@ namespace xu
     /**
       @brief  Returns size
       */
-    size_t size()
+    size_t size() const
     {
       return sz;
     }
