@@ -89,6 +89,16 @@ namespace xu
         return res;
       }
 
+      iterator& operator+=(size_t n)
+      {
+        i += n;
+        if (i > sz)
+        {
+          i = sz;
+        }
+        return *this;
+      }
+
       bool operator==(const iterator& other)
       {
         return (base_ptr == other.base_ptr
