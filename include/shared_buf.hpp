@@ -57,7 +57,12 @@ namespace xu
         : base_ptr(base_ptr_),
           sz(sz_),
           i(i_)
-      {}
+      {
+        if (i > sz)
+        {
+          i = sz;
+        }
+      }
 
       iterator(const iterator& other)
         : base_ptr(other.base_ptr),
@@ -91,11 +96,18 @@ namespace xu
 
       iterator& operator+=(size_t n)
       {
-        i += n;
-        if (i > sz)
+        size_t next = i + n;
+
+        /* check for overflow (as implemented we only allow forward traversal) */
+        if (next < i or next > sz)
         {
           i = sz;
         }
+        else
+        {
+          i = next;
+        }
+
         return *this;
       }
 
@@ -122,6 +134,23 @@ namespace xu
         else
         {
           throw std::out_of_range("shared_buf::iterator::operator* : invalid");
+        }
+      }
+
+      /**
+        @brief  Returns distance between two iterators, measured in bytes
+        @note   Result is a scalar
+        @note   Result is non-negative, so if lhs < rhs, 0 is returned
+        */
+      size_t operator-(const iterator& other)
+      {
+        if (other.i > i)
+        {
+          return 0;
+        }
+        else
+        {
+          return i - other.i;
         }
       }
     };
