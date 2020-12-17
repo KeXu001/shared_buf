@@ -142,6 +142,51 @@ namespace xu
     }
 
     /**
+      @brief  Copy constructor
+      */
+    shared_buf(const shared_buf& other)
+      : ptr(other.ptr),
+        sz(other.sz)
+    {
+      ptr = other.ptr;
+      sz = other.sz;
+    }
+
+    /**
+      @brief  Copy assignment
+      */
+    shared_buf& operator=(const shared_buf& other)
+    {
+      ptr = other.ptr;
+      sz = other.sz;
+
+      return *this;
+    }
+
+    /**
+      @brief  Move constructor
+      */
+    shared_buf(shared_buf&& other)
+      : ptr(std::move(other.ptr)),
+        sz(other.sz)
+    {
+      other.sz = 0;
+    }
+
+    /**
+      @brief  Move assignment
+      */
+    shared_buf& operator=(shared_buf&& other)
+    {
+      ptr = std::move(other.ptr);
+      sz = other.sz;
+
+      other.sz = 0;
+
+      return *this;
+    }
+
+    /**
       @brief  Byte access
       @param  i
               Index

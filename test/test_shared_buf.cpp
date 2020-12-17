@@ -36,4 +36,14 @@ int main()
   }
 
   std::cout << buf << std::endl;
+
+  xu::shared_buf buf_copy = buf;
+
+  buf_copy[2] = 0;
+
+  xu::shared_buf buf_moved = std::move(buf_copy);
+
+  std::cout << "buf=" << buf << std::endl;
+  std::cout << "buf=" << buf_copy << std::endl;
+  std::cout << "buf=" << buf_moved << std::endl;
 }
