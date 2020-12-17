@@ -25,6 +25,21 @@
 #include <iostream>
 #include "shared_buf.hpp"
 
+void outputLoop(const xu::shared_buf& buf)
+{
+  std::cout << "Test:";
+  for (auto it = buf.cbegin(); it != buf.cend(); it++)
+  {
+    if (it != buf.cbegin())
+    {
+      std::cout << ',';
+    }
+
+    std::cout << (int)*it;
+  }
+  std::cout << '\n';
+}
+
 int main()
 {
   xu::shared_buf buf(10);
@@ -46,4 +61,11 @@ int main()
   std::cout << "buf=" << buf << std::endl;
   std::cout << "buf=" << buf_copy << std::endl;
   std::cout << "buf=" << buf_moved << std::endl;
+
+  for (auto it = buf.begin(); it != buf.end(); it++)
+  {
+    *it = 1;
+  }
+
+  outputLoop(buf);
 }
