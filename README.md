@@ -4,4 +4,4 @@
 
 Additionally, it implements:
   - an iterator
-  - operator<<(stream, buf)
+  - `operator<<(stream, buf)`
