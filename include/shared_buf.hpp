@@ -47,35 +47,35 @@ namespace xu
     {
     protected:
       uint8_t* base_ptr;
-      size_t size;
+      size_t sz;
       size_t i;
     public:
       iterator(
         uint8_t* base_ptr_,
-        size_t size_,
+        size_t sz_,
         size_t i_ = 0)
         : base_ptr(base_ptr_),
-          size(size_),
+          sz(sz_),
           i(i_)
       {}
 
       iterator(const iterator& other)
         : base_ptr(other.base_ptr),
-          size(other.size),
+          sz(other.sz),
           i(other.i)
       {}
 
       iterator& operator=(const iterator& other)
       {
         base_ptr = other.base_ptr;
-        size = other.size;
+        sz = other.sz;
         i = other.i;
         return *this;
       }
 
       iterator& operator++()
       {
-        if (i < size)
+        if (i < sz)
         {
           i++;
         }
@@ -92,20 +92,20 @@ namespace xu
       bool operator==(const iterator& other)
       {
         return (base_ptr == other.base_ptr
-          and size == other.size
+          and sz == other.sz
           and i == other.i);
       }
 
       bool operator!=(const iterator& other)
       {
         return (base_ptr != other.base_ptr
-          or size != other.size
+          or sz != other.sz
           or i != other.i);
       }
 
       uint8_t& operator*()
       {
-        if (i < size)
+        if (i < sz)
         {
           return base_ptr[i];
         }
@@ -118,12 +118,12 @@ namespace xu
 
     iterator begin()
     {
-      return iterator(&ptr[0], size);
+      return iterator(&ptr[0], sz);
     }
 
     iterator end()
     {
-      return iterator(&ptr[0], size, size);
+      return iterator(&ptr[0], sz, sz);
     }
 
     //  ================
@@ -132,13 +132,13 @@ namespace xu
 
     /**
       @brief  Constructor
-      @param  size_
+      @param  sz_
               Number of bytes in buffer
       */
-    shared_buf(size_t size_)
-      : size(size_)
+    shared_buf(size_t sz_)
+      : sz(sz_)
     {
-      ptr = std::shared_ptr<uint8_t[]>(new uint8_t[size]);
+      ptr = std::shared_ptr<uint8_t[]>(new uint8_t[sz]);
     }
 
     /**
@@ -150,7 +150,7 @@ namespace xu
       */
     uint8_t& operator[](size_t i)
     {
-      if (i < size)
+      if (i < sz)
       {
         return ptr[i];
       }
@@ -182,7 +182,7 @@ namespace xu
 
       stream << '[' << std::hex;
 
-      for (size_t i = 0; i < size; i++)
+      for (size_t i = 0; i < sz; i++)
       {
         if (i != 0)
         {
@@ -199,13 +199,21 @@ namespace xu
       return stream;
     }
 
+    /**
+      @brief  Returns size
+      */
+    size_t size()
+    {
+      return sz;
+    }
+
   protected:
     //  ================
     //  Member Variables
     //  ================
 
     std::shared_ptr<uint8_t[]> ptr;
-    size_t size;
+    size_t sz;
   };
 }
 
