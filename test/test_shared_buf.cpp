@@ -28,14 +28,14 @@
 void outputLoop(const xu::shared_buf& buf)
 {
   std::cout << "Test:";
-  for (auto it = buf.cbegin(); it != buf.cend(); it++)
+  for (auto cit = buf.begin(); cit != buf.end(); cit++)
   {
-    if (it != buf.cbegin())
+    if (cit != buf.begin())
     {
       std::cout << ',';
     }
 
-    std::cout << (int)*it;
+    std::cout << (int)*cit;
   }
   std::cout << '\n';
 }
@@ -62,9 +62,13 @@ int main()
   std::cout << "buf=" << buf_copy << std::endl;
   std::cout << "buf=" << buf_moved << std::endl;
 
+  xu::shared_buf::const_iterator cit = buf.begin();
+
   for (auto it = buf.begin(); it != buf.end(); it++)
   {
     *it = 1;
+
+    cit = it;
   }
 
   outputLoop(buf);

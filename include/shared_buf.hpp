@@ -43,16 +43,16 @@ namespace xu
     //  Iterators
     //  =========
 
-    template<typename Ptr_T, typename Val_T>
+    template<typename Val_T>
     class iterator_
     {
     protected:
-      Ptr_T base_ptr;
+      uint8_t* base_ptr;
       size_t sz;
       size_t i;
     public:
       iterator_(
-        Ptr_T base_ptr_,
+        uint8_t* base_ptr_,
         size_t sz_,
         size_t i_ = 0)
         : base_ptr(base_ptr_),
@@ -126,7 +126,7 @@ namespace xu
           or i != other.i);
       }
 
-      Val_T operator*() const
+      Val_T& operator*() const
       {
         if (i < sz)
         {
@@ -154,10 +154,15 @@ namespace xu
           return i - other.i;
         }
       }
+
+      operator iterator_<const Val_T>() const
+      {
+        return iterator_<const Val_T>(base_ptr, sz, i);
+      }
     };
 
-    using iterator = iterator_<uint8_t*, uint8_t&>;
-    using const_iterator = iterator_<const uint8_t*, uint8_t>;
+    using iterator = iterator_<uint8_t>;
+    using const_iterator = iterator_<const uint8_t>;
 
     iterator begin()
     {
@@ -169,12 +174,12 @@ namespace xu
       return iterator(&ptr[0], sz, sz);
     }
 
-    const_iterator cbegin() const
+    const_iterator begin() const
     {
       return const_iterator(&ptr[0], sz);
     }
 
-    const_iterator cend() const
+    const_iterator end() const
     {
       return const_iterator(&ptr[0], sz, sz);
     }
