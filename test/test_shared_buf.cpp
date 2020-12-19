@@ -38,6 +38,11 @@ void outputLoop(const xu::shared_buf& buf)
     std::cout << (int)*cit;
   }
   std::cout << '\n';
+
+  if (buf.size() > 0)
+  {
+    std::cout << "test: " << (int)buf[0] << std::endl;
+  }
 }
 
 int main()

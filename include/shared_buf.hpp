@@ -138,6 +138,18 @@ namespace xu
         }
       }
 
+      Val_T* ptr() const
+      {
+        if (i < sz)
+        {
+          return base_ptr + i;
+        }
+        else
+        {
+          throw std::out_of_range("shared_buf::iterator_::ptr() : invalid");
+        }
+      }
+
       /**
         @brief  Returns distance between two iterators, measured in bytes
         @note   Result is a scalar
@@ -272,7 +284,14 @@ namespace xu
       */
     uint8_t operator[](size_t i) const
     {
-      return operator[](i);
+      if (i < sz)
+      {
+        return ptr[i];
+      }
+      else
+      {
+        throw std::out_of_range("shared_buf::operator[] : index out of range");
+      }
     }
 
     /**
