@@ -282,7 +282,7 @@ namespace xu
       @throw  std::out_of_range
               If index is not within size
       */
-    uint8_t operator[](size_t i) const
+    const uint8_t& operator[](size_t i) const
     {
       if (i < sz)
       {
