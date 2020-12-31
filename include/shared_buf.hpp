@@ -206,20 +206,21 @@ namespace xu
               Number of bytes in buffer
       */
     shared_buf(size_t sz_)
-      : sz(sz_)
+      : sz(sz_),
+        ptr(new uint8_t[sz])
     {
-      ptr = std::shared_ptr<uint8_t[]>(new uint8_t[sz]);
+      
     }
 
     /**
       @brief  Copy constructor
       */
     shared_buf(const shared_buf& other)
-      : ptr(other.ptr),
-        sz(other.sz)
+      : sz(other.sz),
+        ptr(other.ptr)
     {
-      ptr = other.ptr;
       sz = other.sz;
+      ptr = other.ptr;
     }
 
     /**
@@ -227,8 +228,8 @@ namespace xu
       */
     shared_buf& operator=(const shared_buf& other)
     {
-      ptr = other.ptr;
       sz = other.sz;
+      ptr = other.ptr;
 
       return *this;
     }
@@ -237,8 +238,8 @@ namespace xu
       @brief  Move constructor
       */
     shared_buf(shared_buf&& other)
-      : ptr(std::move(other.ptr)),
-        sz(other.sz)
+      : sz(other.sz),
+        ptr(std::move(other.ptr))
     {
       other.sz = 0;
     }
@@ -248,8 +249,8 @@ namespace xu
       */
     shared_buf& operator=(shared_buf&& other)
     {
-      ptr = std::move(other.ptr);
       sz = other.sz;
+      ptr = std::move(other.ptr);
 
       other.sz = 0;
 
@@ -347,8 +348,8 @@ namespace xu
     //  Member Variables
     //  ================
 
-    std::shared_ptr<uint8_t[]> ptr;
     size_t sz;
+    std::shared_ptr<uint8_t[]> ptr;
   };
 }
 
