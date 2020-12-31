@@ -295,6 +295,19 @@ namespace xu
     }
 
     /**
+      @brief  Deep copy
+      */
+    shared_buf deepCopy() const
+    {
+      shared_buf copy(sz);
+      for (size_t i = 0; i < sz; i++)
+      {
+        copy.ptr[i] = ptr[i];
+      }
+      return std::move(copy);
+    }
+
+    /**
       @brief  Output to string
       */
     std::ostream& print(std::ostream& stream) const
@@ -311,7 +324,7 @@ namespace xu
           stream << ',';
         }
 
-        stream << (int)ptr[i] << 'h';
+        stream << std::setw(2) << std::setfill('0') << (int)ptr[i];// << 'h';
       }
 
       stream << ']';
