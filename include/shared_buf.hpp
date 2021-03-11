@@ -296,6 +296,22 @@ namespace xu
     }
 
     /**
+      @brief  Pointer access
+      */
+    uint8_t* data()
+    {
+      return ptr.get();
+    }
+
+    /**
+      @brief  Pointer access, const-qualified
+      */
+    const uint8_t* data() const
+    {
+      return ptr.get();
+    }
+
+    /**
       @brief  Deep copy
       */
     shared_buf deepCopy() const
